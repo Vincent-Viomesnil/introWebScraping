@@ -11,6 +11,8 @@ import java.util.Scanner;
 public class RecipeApplication {
     public static void main(String[] args) {
 
+        Epices epices = new Epices();
+
         Scanner scanner = new Scanner(System.in);
         System.out.print("Entrez les ingrédients (séparés par des virgules) : ");
         String ingredients = scanner.nextLine();
