@@ -6,6 +6,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class RecipeApplication {
@@ -28,17 +30,28 @@ public class RecipeApplication {
                     Document doc2 = Jsoup.connect(linkRecipe).timeout(6000).get(); // Ouvrir la page de la recette
 
                     String recipeName = recipe.select(".recipe-card__title").text(); // Récupérer le nom de la recette
-                    Elements ingredientRecipe = doc2.select(".RCP__sc-8cqrvd-3.itCXhd");
+                    Elements ingredientRecipe = doc2.select("meta[property=og:description]");
+
+                        String ingredientsList = ingredientRecipe.attr("content"); //récupérer la liste des ingrédients dans une recette
+                    System.out.println("content de la recette Avant : " + ingredientsList);
+
+//                    Elements ingredientRecipe = doc2.select(".odescription");
+//                    StringBuilder recipeIngredients = new StringBuilder();
+//                    for (Element ingredientElement : ingredientRecipe) {
+                        String ingredientText = ingredientsList.toLowerCase().trim();
+                    System.out.println("ingredientText de la recette Avant : " + ingredientText);
+
+                    String[] ingredientsArray = ingredientText.split(", ");
                     StringBuilder recipeIngredients = new StringBuilder();
-                    for (Element ingredientElement : ingredientRecipe) {
-                        String ingredientText = ingredientElement.text().toLowerCase().trim();
-                        if (!epices.getEpicesListes().contains(ingredientText)) {
-                            recipeIngredients.append(ingredientText).append(", ");
+
+                    for (String ingredient : ingredientsArray) {
+                        if (!ingredient.contains(epices.epicesListes.toString())){
+                            recipeIngredients.append(ingredient).append(", ");
                         }
                     }
 
-                    System.out.println("Ingrédients de la recette Avant : " + recipeIngredients);
-
+                    System.out.println("epicesListes de la recette Avant : " + epices.getEpicesListes().toString());
+                    System.out.println("recipeIngredients de la recette Avant : " + recipeIngredients);
 
                     if (containsExactIngredients(recipeIngredients.toString(), ingredients)) {
                         // Afficher la recette
@@ -60,27 +73,12 @@ public class RecipeApplication {
 
     private static boolean containsExactIngredients(String recipeIngredients, String selectedIngredients) {
         String[] selectedIngredientsArray = selectedIngredients.split(",");
-
         for (String ingredient : selectedIngredientsArray) {
-            String trimmedIngredient = ingredient.trim().toLowerCase();
-            boolean ingredientFound = false;
-
-            for (String recipeIngredient : recipeIngredients.split(",")) {
-                if (recipeIngredient.trim().equals(trimmedIngredient)) {
-                    ingredientFound = true;
-                    break;
-                }
-            }
-
-            if (!ingredientFound) {
-                return false; // Un ingrédient n'est pas trouvé, la recette est ignorée
+            if (!recipeIngredients.toLowerCase().contains(ingredient.trim().toLowerCase())) {
+                return false; // Si un seul ingrédient n'est pas trouvé, la recette est ignorée
             }
         }
-
-        return true; // Tous les ingrédients sont trouvés, la recette est incluse
+        return true;
     }
-
-
-
 
 }
