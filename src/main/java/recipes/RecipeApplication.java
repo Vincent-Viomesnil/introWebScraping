@@ -46,13 +46,17 @@ public class RecipeApplication {
                                 }
                             }
 
+                            int wordCount = countWords(recipeIngredients);
+
                             System.out.println("Ingrédients filtrés de la recette : " + recipeIngredients);
 
-                            if (recipeIngredients.length() > 0) {
+                            if (wordCount == ingredients.length()) {
                                 System.out.println("Nom de la recette : " + recipeName);
                                 System.out.println("Lien de la recette : " + linkRecipe);
                             } else {
                                 System.out.println("Recette ignorée : " + recipeName);
+                                System.out.println(recipeIngredients.length() +"recipeIngredients.length()");
+                                System.out.println(ingredients.length() + "ingredients.length()");
                             }
 
                         }
@@ -71,5 +75,14 @@ public class RecipeApplication {
                 }
                 return false;
             }
+    private static int countWords(StringBuilder text) {
+        String[] words = new String[]{text.toString().trim()};
+        return words.length;
+    }
+
+//    private static int countWords(StringBuilder text) {
+//        String[] words = text.toString().trim();
+//        return words.length;
+//    }
         }
 
