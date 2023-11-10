@@ -21,7 +21,7 @@ public class RecipeApplication {
 
                 Scanner scanner = new Scanner(System.in);
                 System.out.print("Entrez les ingrédients (séparés par des virgules et un espace après chaque virgule) : ");
-                String ingredients = scanner.nextLine();
+                String ingredients = scanner.nextLine(); //test avec "rôti de boeuf" OK
 
                 String url = "https://www.marmiton.org/recettes/index/categorie/plat-principal/";
                 for (int currentPage = 0; currentPage < 1; currentPage++) {
